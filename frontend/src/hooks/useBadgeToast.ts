@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { BadgeToastData } from "../components/ui/BadgeToast";
+import type { BadgeDefinition } from "../constants/badges";
 
-export interface BadgeDefinition {
-  id: string;
-  name: string;
-  icon: string;
-  desc: string;
-}
 
 const STORAGE_KEY = "atelier_seen_badges";
 

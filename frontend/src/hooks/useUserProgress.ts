@@ -50,11 +50,8 @@ export function useUserProgress() {
 
 const totalXP = useMemo(() => {
   const backendXP = progress.reduce((acc, p) => acc + p.score, 0);
-  console.log("Backend XP:", backendXP, "Pending XP:", getPendingXP(progress));
   return backendXP + getPendingXP(progress);
 }, [progress, getPendingXP]);
-
-console.log("Total XP:", totalXP);
 
   return {
     progress,
