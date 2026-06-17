@@ -6,8 +6,12 @@ import { BADGES } from "../../constants/badges";
 
 export function BadgeToastNotifier() {
   const { user } = useAuth();
-  const { earnedBadges } = useEarnedBadges();
-  const { toasts, dismissToast } = useBadgeToast(earnedBadges, BADGES);
+  const { earnedBadges, isLessonsLoading, curriculumData } = useEarnedBadges();
+
+  // Wait for lessons and curriculum data to load before checking for new badges.
+  const isDataReady = !isLessonsLoading && curriculumData.length > 0;
+
+  const { toasts, dismissToast } = useBadgeToast(earnedBadges, BADGES, isDataReady);
 
   if (!user || user.is_staff) return null;
 

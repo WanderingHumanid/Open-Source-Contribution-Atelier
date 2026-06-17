@@ -17,7 +17,8 @@ interface BadgeToastProps {
 
 export function BadgeToast({ badge, onDismiss }: BadgeToastProps) {
   const [visible, setVisible] = useState(false);
-  const [isDismissing, setIsDismissing] = useState(false);
+  // Use a ref to track dismissal so the dismiss callback stays stable
+  const isDismissingRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -26,13 +27,13 @@ export function BadgeToast({ badge, onDismiss }: BadgeToastProps) {
   }, []);
 
   const dismiss = useCallback(() => {
-    if (isDismissing) return;
-    setIsDismissing(true);
+    if (isDismissingRef.current) return;
+    isDismissingRef.current = true;
     setVisible(false);
     timerRef.current = setTimeout(() => onDismiss(badge.id), 350);
-  }, [isDismissing, onDismiss, badge.id]);
+  }, [onDismiss, badge.id]);
 
-  // Auto-dismiss
+  // Auto-dismiss after AUTO_DISMISS_MS
   useEffect(() => {
     const auto = setTimeout(dismiss, AUTO_DISMISS_MS);
     return () => {
